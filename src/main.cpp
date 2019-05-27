@@ -1,5 +1,6 @@
+#include <Eigen/Core>
 #include <iostream>
-//#include <Eigen/Core>
+#include <vector>
 
 #include <helpers.hpp>
 #include <io.hpp>
@@ -12,6 +13,14 @@ int main(int argc, char** argv) {
   // read highway map
   map_t map = read_map(MAP_FILE);
   std::cout << "Loaded map with " << map.size << " waypoints." << std::endl;
+
+  SimIO simulator(PORT, [&](car_t ego, path_t prev_path, double end_path_s,
+      double end_path_d, std::vector<car_t> other_cars) {
+    path_t path{};
+
+    return path;
+  });
+  simulator.run();
   return 0;
 }
 
