@@ -2,12 +2,12 @@
 #include <iostream>
 #include <vector>
 
+#include <constants.hpp>
 #include <helpers.hpp>
 #include <io.hpp>
+#include <motion.hpp>
 #include <types.hpp>
 
-const std::string MAP_FILE = "../data/highway_map.csv";
-const int PORT = 4567;
 
 int main(int argc, char** argv) {
   // read highway map
@@ -16,9 +16,17 @@ int main(int argc, char** argv) {
 
   SimIO simulator(PORT, [&](car_t ego, path_t prev_path, double end_path_s,
       double end_path_d, std::vector<car_t> other_cars) {
-    path_t path{};
+//    path_t path{};
 
-    return path;
+    std::cout << "x,y: " << ego.x << "," << ego.y << "\t"
+              << "s,d: " << ego.s << "," << ego.d << "\t"
+              << "yaw: " << ego.yaw << "\t"
+              << "speed: " << ego.speed << "\t"
+              << "vel x,y: " << ego.vel_x << "," << ego.vel_y
+              << std::endl;
+
+    return move_straight(ego, SPEED_LIMIT);
+//    return path;
   });
   simulator.run();
   return 0;
