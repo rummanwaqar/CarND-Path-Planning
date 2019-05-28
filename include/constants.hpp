@@ -12,3 +12,8 @@ const double SPEED_LIMIT = 22.3; // m/s = 50 mph
 
 // time simulator takes to move between two path points
 const double TIME_PER_STEP = 0.02; // 20 ms
+
+// width of each road lane
+const double LANE_WIDTH = 4.0; // meters
+// number of lanes on each side
+const int MAX_LANES = 3;

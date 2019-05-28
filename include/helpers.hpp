@@ -15,6 +15,13 @@
 map_t read_map(std::string map_file);
 
 /*
+ * calculates euclidean distance
+ */
+inline double distance(double x1, double y1, double x2, double y2) {
+  return ::sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+}
+
+/*
  * convert deg to radian
  */
 inline double deg2rad(double deg) {

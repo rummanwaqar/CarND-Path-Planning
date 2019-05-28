@@ -16,17 +16,25 @@ int main(int argc, char** argv) {
 
   SimIO simulator(PORT, [&](car_t ego, path_t prev_path, double end_path_s,
       double end_path_d, std::vector<car_t> other_cars) {
-//    path_t path{};
+    path_t path{};
 
-    std::cout << "x,y: " << ego.x << "," << ego.y << "\t"
-              << "s,d: " << ego.s << "," << ego.d << "\t"
-              << "yaw: " << ego.yaw << "\t"
-              << "speed: " << ego.speed << "\t"
-              << "vel x,y: " << ego.vel_x << "," << ego.vel_y
-              << std::endl;
+//    std::cout << "x,y: " << ego.x << "," << ego.y << "\t"
+//              << "s,d: " << ego.s << "," << ego.d << "\t"
+//              << "yaw: " << ego.yaw << "\t"
+//              << "speed: " << ego.speed << "\t"
+//              << "vel x,y: " << ego.vel_x << "," << ego.vel_y
+//              << std::endl;
 
-    return move_straight(ego, SPEED_LIMIT);
-//    return path;
+    double s, d, x, y;
+    std::tie(s, d) = get_frenet(ego.x, ego.y, deg2rad(ego.yaw), map);
+    std::cout << s << "," << d << std::endl;
+    //    std::tie(x, y) = get_cartesian(s, d, map);
+//    std::cout << x << ":" << ego.x << "\t" << y << ":" << ego.y << std::endl;
+
+
+
+//    return move_straight(ego, SPEED_LIMIT);
+    return path;
   });
   simulator.run();
   return 0;
