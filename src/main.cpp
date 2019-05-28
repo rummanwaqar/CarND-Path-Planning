@@ -18,22 +18,17 @@ int main(int argc, char** argv) {
       double end_path_d, std::vector<car_t> other_cars) {
     path_t path{};
 
-//    std::cout << "x,y: " << ego.x << "," << ego.y << "\t"
-//              << "s,d: " << ego.s << "," << ego.d << "\t"
-//              << "yaw: " << ego.yaw << "\t"
-//              << "speed: " << ego.speed << "\t"
-//              << "vel x,y: " << ego.vel_x << "," << ego.vel_y
-//              << std::endl;
+    // stay in lane
+    double dist = TIME_PER_STEP * (SPEED_LIMIT - 1);
+    for(int i=0; i<50; i++) {
+      double next_s = ego.s + (i + 1) * dist;
+      double next_d = get_d_from_lane(1);
+      double next_x, next_y;
+      std::tie(next_x, next_y) = get_cartesian(next_s, next_d, map);
+      path.x.push_back(next_x);
+      path.y.push_back(next_y);
+    }
 
-    double s, d, x, y;
-    std::tie(s, d) = get_frenet(ego.x, ego.y, deg2rad(ego.yaw), map);
-    std::cout << s << "," << d << std::endl;
-    //    std::tie(x, y) = get_cartesian(s, d, map);
-//    std::cout << x << ":" << ego.x << "\t" << y << ":" << ego.y << std::endl;
-
-
-
-//    return move_straight(ego, SPEED_LIMIT);
     return path;
   });
   simulator.run();
