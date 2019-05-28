@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include "constants.hpp"
+#include "helpers.hpp"
 #include "types.hpp"
 
 /*

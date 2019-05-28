@@ -22,10 +22,10 @@ path_t move_straight(const car_t& ego, double speed) {
   double dist = TIME_PER_STEP * speed;
   // generate relative path
   for(int i=0; i<50; i++) {
-    path.y.push_back(0);
     path.x.push_back(dist * i);
+    path.y.push_back(0);
   }
   // transform path to abs coordinates
-  transform_path_abs(ego.x, ego.y, ego.yaw, path);
+  transform_path_abs(ego.x, ego.y, deg2rad(ego.yaw), path);
   return path;
 }

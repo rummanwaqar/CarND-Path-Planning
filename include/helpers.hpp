@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cmath>
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -11,25 +12,18 @@
  * @param map_file: map csv
  * @return map
  */
-map_t read_map(std::string map_file) {
-  map_t map{};
-  std::ifstream in_file(map_file.c_str(), std::ifstream::in);
-  if(!in_file) {
-    throw std::runtime_error("Map file not found");
-  }
+map_t read_map(std::string map_file);
 
-  std::string line;
-  while(getline(in_file, line)) {
-    std::istringstream iss(line);
-    double x, y;
-    float s, dx, dy;
-    iss >> x >> y >> s >> dx >> dy;
-    map.x.push_back(x);
-    map.y.push_back(y);
-    map.s.push_back(s);
-    map.dx.push_back(dx);
-    map.dy.push_back(dy);
-  }
-  map.size = map.x.size();
-  return map;
+/*
+ * convert deg to radian
+ */
+inline double deg2rad(double deg) {
+  return deg * M_PI / 180.0;
+}
+
+/*
+ * convert rad to deg
+ */
+inline double rad2deg(double rad) {
+  return rad * 180.0 / M_PI;
 }
