@@ -2,10 +2,27 @@
 
 #include <cmath>
 #include <limits>
-#include <tuple>
+#include <utility>
 #include "constants.hpp"
 #include "helpers.hpp"
+#include "spline.h"
 #include "types.hpp"
+
+/*
+ * move in straight line at given speed
+ * @param ego: our vehicle state
+ * @param speed: target speed
+ */
+path_t move_straight(const car_t& ego, double speed);
+
+/*
+ * generates a spare path to follow in the specified lane
+ * @param ego: our ego vehicles state
+ * @param lane: current lane to follow
+ * @param prev_path: left over previous path
+ * @param map: waypoint map
+ */
+path_t move_in_lane(const car_t &ego, int lane, double speed, const path_t &prev_path, const map_t &map);
 
 /*
  * transform path from relative to absolute coordinates
@@ -17,11 +34,22 @@
 void transform_path_abs(double x, double y, double yaw, path_t& path);
 
 /*
- * move in straight line at given speed
- * @param ego: our vehicle state
- * @param speed: target speed
+ * transform path from relative to absolute coordinates
+ * @param ref_x: car x location
+ * @param ref_y: car y location
+ * @param ref_yaw: car yaw
+ * @param point: point is transformed in place
  */
-path_t move_straight(const car_t& ego, double speed);
+void transform_point_abs(double ref_x, double ref_y, double ref_yaw, std::pair<double, double>& point);
+
+/*
+ * transform path from absolute to relative coordinates
+ * @param x: relative x
+ * @param y: relative y
+ * @param yaw: relative angle
+ * @param path: path is transformed in place
+ */
+void transform_path_rel(double x, double y, double yaw, path_t& path);
 
 /*
  * find the closest waypoint to specified x and y
@@ -45,16 +73,19 @@ int next_waypoint(double x, double y, double theta, const map_t& map);
  * @param x, y: cartesian coods
  * @param theta: angle of robot
  * @param map: waypoint map
- * @return s, d as tuple
+ * @return s, d as pair
  */
-std::tuple<double, double> get_frenet(double x, double y, double theta, const map_t& map);
+std::pair<double, double> get_frenet(double x, double y, double theta, const map_t& map);
 
 /*
  * transform frenet s, d to cartesian x, y coods
  * @param s, d: frenet coods
  * @param map: waypoint map
- * @return x, y as tuple
+ * @return x, y as pair
  */
-std::tuple<double, double> get_cartesian(double s, double d, const map_t& map);
+std::pair<double, double> get_cartesian(double s, double d, const map_t& map);
 
+/*
+ * returns frenet d value for a particular lane
+ */
 double get_d_from_lane(int lane);
