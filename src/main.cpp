@@ -16,8 +16,6 @@ int main(int argc, char** argv) {
 
   int lane = 2;
   double ego_speed = 0;
-  int prepare_lane_change_left = 0;
-  int prepare_lane_change_right = 0;
 
   SimIO simulator(PORT, [&](car_t ego, path_t prev_path, double end_path_s,
       double end_path_d, std::vector<car_t> other_cars) {
@@ -35,26 +33,12 @@ int main(int argc, char** argv) {
       ego_speed -= ACCELERATION;
       // check if we can switch lane
       if(check_lane_for_switch(lane - 1, ego.s, end_path_s, prev_path.x.size(), other_cars, 30)) {
-        prepare_lane_change_left++;
-        prepare_lane_change_right = 0;
+        lane -= 1;
       } else if(check_lane_for_switch(lane + 1, ego.s, end_path_s, prev_path.x.size(), other_cars, 30)) {
-        prepare_lane_change_right++;
-        prepare_lane_change_left = 0;
-      } else {
-        prepare_lane_change_left = 0;
-        prepare_lane_change_right = 0;
+        lane += 1;
       }
     } else if (ego_speed < SPEED_LIMIT){
       ego_speed += ACCELERATION;
-    }
-
-    if(prepare_lane_change_left == LANE_CHANGE_COUNTER) {
-      lane -= 1;
-      prepare_lane_change_left = 0;
-    }
-    if(prepare_lane_change_right == LANE_CHANGE_COUNTER) {
-      lane += 1;
-      prepare_lane_change_right = 0;
     }
 
     // generate path
