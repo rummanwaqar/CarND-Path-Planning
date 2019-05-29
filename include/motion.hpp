@@ -24,7 +24,26 @@ path_t move_straight(const car_t& ego, double speed);
  */
 path_t move_in_lane(const car_t &ego, int lane, double speed, const path_t &prev_path, const map_t &map);
 
+/*
+ * checks if collision eminent in lane
+ * @param lane: your lane
+ * @param ego_s: s value for ego vehicle
+ * @param end_path_s: s value at the end of last path
+ * @param prev_path_size: path size from prev step
+ * @param other_cars: vector of the other vehicles on the road
+ */
 bool check_collision_in_lane(int lane, double ego_s, double end_path_s, int prev_path_size, const std::vector<car_t>& other_cars);
+
+/*
+ * checks if lane is collision free for switching
+ * @param lane: your lane
+ * @param ego_s: s value for ego vehicle
+ * @param end_path_s: s value at the end of last path
+ * @param prev_path_size: path size from prev step
+ * @param other_cars: vector of the other vehicles on the road
+ * @param safe_distance: +/- distance in lane that is considered safe
+ */
+bool check_lane_for_switch(int lane, double ego_s, double end_path_s, int prev_path_size, const std::vector<car_t>& other_cars, double safe_distance);
 
 /*
  * transform path from relative to absolute coordinates

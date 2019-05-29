@@ -47,7 +47,7 @@ path_t move_in_lane(const car_t &ego, int lane, double speed, const path_t &prev
     sparse_path.y.push_back(ref_y);
   }
 
-  // in frenet generate 3 more points 30 meters apart
+  // in frenet generate 3 more points 40 meters apart
   for(int i=1; i<=3; i++) {
     auto wp = get_cartesian(ego.s + 30 * i, get_d_from_lane(lane), map);
     sparse_path.x.push_back(wp.first);
@@ -107,6 +107,28 @@ bool check_collision_in_lane(int lane, double ego_s, double end_path_s, int prev
     }
   };
   return false;
+}
+
+bool check_lane_for_switch(int lane, double ego_s, double end_path_s, int prev_path_size, const std::vector<car_t>& other_cars, double safe_distance) {
+  if(lane <= 0 || lane > MAX_LANES) {
+    return false;
+  }
+  if(prev_path_size > 0) {
+    ego_s = end_path_s;
+  }
+  // cycle through all the other cars
+  for(const auto car : other_cars) {
+    // check lane
+    if(car.d < (get_d_from_lane(lane) + 2) && car.d > (get_d_from_lane(lane) - 2)) {
+      double speed = ::sqrt(car.vel_x * car.vel_x + car.vel_y * car.vel_y);
+      double check_s = car.s;
+      check_s += static_cast<double>(prev_path_size) * TIME_PER_STEP * speed;
+      if((check_s - ego_s) < safe_distance && (ego_s - check_s) < safe_distance) {
+        return false;
+      }
+    }
+  };
+  return true;
 }
 
 void transform_path_abs(double x, double y, double yaw, path_t& path) {
