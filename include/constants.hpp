@@ -13,6 +13,9 @@ const double SPEED_LIMIT = 22.0; // m/s = <50 mph
 // acceleration
 const double ACCELERATION = 0.224;
 
+// lane change wait
+const int LANE_CHANGE_COUNTER = 10;
+
 // time simulator takes to move between two path points
 const double TIME_PER_STEP = 0.02; // 20 ms
 

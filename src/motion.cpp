@@ -47,7 +47,7 @@ path_t move_in_lane(const car_t &ego, int lane, double speed, const path_t &prev
     sparse_path.y.push_back(ref_y);
   }
 
-  // in frenet generate 3 more points 40 meters apart
+  // in frenet generate 3 more points 30 meters apart
   for(int i=1; i<=3; i++) {
     auto wp = get_cartesian(ego.s + 30 * i, get_d_from_lane(lane), map);
     sparse_path.x.push_back(wp.first);
