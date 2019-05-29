@@ -8,7 +8,10 @@ const std::string MAP_FILE = "../data/highway_map.csv";
 const int PORT = 4567;
 
 // speed limit
-const double SPEED_LIMIT = 22.3; // m/s = 50 mph
+const double SPEED_LIMIT = 22.0; // m/s = <50 mph
+
+// acceleration
+const double ACCELERATION = 0.224;
 
 // time simulator takes to move between two path points
 const double TIME_PER_STEP = 0.02; // 20 ms

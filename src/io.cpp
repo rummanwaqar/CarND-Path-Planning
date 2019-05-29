@@ -43,6 +43,7 @@ SimIO::SimIO(int port, ProcessCb cb) : port_(port), callbackFunc_(cb) {
             temp_car.vel_y = car[4];
             temp_car.s = car[5];
             temp_car.d = car[6];
+            cars.push_back(temp_car);
           }
 
           // define a path made up of (x,y) points that the car will visit

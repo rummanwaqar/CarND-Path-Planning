@@ -90,6 +90,25 @@ path_t move_in_lane(const car_t &ego, int lane, double speed, const path_t &prev
   return path;
 }
 
+bool check_collision_in_lane(int lane, double ego_s, double end_path_s, int prev_path_size, const std::vector<car_t> &other_cars) {
+  if(prev_path_size > 0) {
+    ego_s = end_path_s;
+  }
+  // cycle through all the other cars
+  for(const auto car : other_cars) {
+    // check lane
+    if(car.d < (get_d_from_lane(lane) + 2) && car.d > (get_d_from_lane(lane) - 2)) {
+      double speed = ::sqrt(car.vel_x * car.vel_x + car.vel_y * car.vel_y);
+      double check_s = car.s;
+      check_s += static_cast<double>(prev_path_size) * TIME_PER_STEP * speed;
+      if(check_s > ego_s && (check_s - ego_s) < 30) {
+        return true;
+      }
+    }
+  };
+  return false;
+}
+
 void transform_path_abs(double x, double y, double yaw, path_t& path) {
   /*
    * abs = T * rel

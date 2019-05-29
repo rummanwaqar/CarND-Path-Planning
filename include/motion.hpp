@@ -24,6 +24,8 @@ path_t move_straight(const car_t& ego, double speed);
  */
 path_t move_in_lane(const car_t &ego, int lane, double speed, const path_t &prev_path, const map_t &map);
 
+bool check_collision_in_lane(int lane, double ego_s, double end_path_s, int prev_path_size, const std::vector<car_t>& other_cars);
+
 /*
  * transform path from relative to absolute coordinates
  * @param x: car x location

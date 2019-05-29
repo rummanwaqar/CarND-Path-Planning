@@ -14,11 +14,24 @@ int main(int argc, char** argv) {
   map_t map = read_map(MAP_FILE);
   std::cout << "Loaded map with " << map.size << " waypoints." << std::endl;
 
+  double lane = 2;
+  double ego_speed = 0;
+
   SimIO simulator(PORT, [&](car_t ego, path_t prev_path, double end_path_s,
       double end_path_d, std::vector<car_t> other_cars) {
 
+    // check for collision
+    bool too_close = check_collision_in_lane(lane, ego.s, end_path_s, prev_path.x.size(), other_cars);
+
+    // adjust speed
+    if(too_close) {
+      ego_speed -= ACCELERATION;
+    } else if (ego_speed < SPEED_LIMIT){
+      ego_speed += ACCELERATION;
+    }
+
     // generate path
-    path_t path = move_in_lane(ego, 1, 20, prev_path, map);
+    path_t path = move_in_lane(ego, lane, ego_speed, prev_path, map);
 
     return path;
   });
